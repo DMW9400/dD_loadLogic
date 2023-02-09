@@ -1,14 +1,14 @@
 autowatch = 1;
-inlets = 2;
-outlets = 2; 
+inlets = 1;
+outlets = 3; 
 
 var filePath = ''
 var pathString = 'fileString'
 var firstPatch = ''
 var currentPatch = ''
-var previousPatch = ''
 var saveAsActive = false
 var initBool = false
+var patchCount = 0
 
 function save(filename) {
       var f = new File(filename, "write", "TEXT");
@@ -53,9 +53,6 @@ function loadPatch(patchName){
 	if (patchName != currentPatch){
 		outlet(1, 'read ' + patchName)
 		outlet(1, '1')
-		if(currentPatch.length > 0 ){
-			previousPatch = currentPatch
-		}
 		currentPatch = patchName
 	}
 }
@@ -92,12 +89,11 @@ function loadSaveAs(patchName){
 		var scrubbedName = patchName.substring(0, patchName.indexOf('.'))
 		post('LSA_loadPatch: ', scrubbedName)
 		outlet(0, "append " + scrubbedName)
-		outlet(0, "set " + scrubbedName)
 		if (initBool){
-			// initBool = true
 			outlet(0, 'symbol Init')
 		}
 		loadPatch(scrubbedName)
+		outlet(0, "set " + scrubbedName)
 	}
 	saveAsActive = false
 }
@@ -122,9 +118,4 @@ function loadInit(){
 	loadPatch('Init')
 	outlet(0, 'append Init')
 	outlet(0, 'set Init')
-}
-
-function printPatches(){
-	post('current: ', currentPatch)
-	post('previous: ', previousPatch)
 }

@@ -88,17 +88,16 @@ function loadbang(){
 }
 
 function loadSaveAs(patchName){
-	post('patchname_lsa', patchName)
 	if(saveAsActive && patchName !== '<none>'){
-		// postMessage("patch length:", patchName)
 		var scrubbedName = patchName.substring(0, patchName.indexOf('.'))
-		loadPatch(scrubbedName)
+		post('LSA_loadPatch: ', scrubbedName)
 		outlet(0, "append " + scrubbedName)
-		if (previousPatch == 'Init'){
-			initBool = true
+		outlet(0, "set " + scrubbedName)
+		if (initBool){
+			// initBool = true
 			outlet(0, 'symbol Init')
 		}
-		outlet(0, "set " + scrubbedName)
+		loadPatch(scrubbedName)
 	}
 	saveAsActive = false
 }
@@ -107,7 +106,6 @@ function saveAsPatch(){
 	saveAsActive = true
 	outlet(1, 'store 1')
 	outlet(1, 'write')
-	// loadSaveAs()
 }
 
 function savePatch(){
@@ -124,4 +122,9 @@ function loadInit(){
 	loadPatch('Init')
 	outlet(0, 'append Init')
 	outlet(0, 'set Init')
+}
+
+function printPatches(){
+	post('current: ', currentPatch)
+	post('previous: ', previousPatch)
 }

@@ -77,6 +77,8 @@ function writePath(pathText){
 function formatUMenuOut(menuString){
 	var startInd = menuString.lastIndexOf("/") + 1
 	var cleanString = menuString.substring(startInd,menuString.length)
+	post('cleanstring: ', cleanString)
+	outlet(2, 'set patchName ' + cleanString)
 	loadPatch(cleanString)
 }
 
@@ -118,4 +120,16 @@ function loadInit(){
 	loadPatch('Init')
 	outlet(0, 'append Init')
 	outlet(0, 'set Init')
+}
+
+function getDeviceName(){
+	post('TRIGGER')
+	api = new LiveAPI(this.patcher "live_set");
+	post(this.patcher.name)
+	if (!api) {
+	post("no api object\n");
+	return;
+	}
+	post("api.id is", api.id, "\n");
+	post("api.path is", api.path, "\n");
 }
